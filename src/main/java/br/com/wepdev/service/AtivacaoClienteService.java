@@ -9,36 +9,18 @@ import br.com.wepdev.notificacao.Notificador;
 @Component // Definindo a classe como um Bean spring, o spring gerencia, instancia , configura e injeta objetos dessa classe em outros beans
 public class AtivacaoClienteService {
 	
-	@Autowired
+	@Autowired(required = false) // Dessa forma e informado que a dependencia dessa classe não e obrigatoria
 	private Notificador notificador;
 	
-	/*
-	 * O Construtor e sempre uma opção de ponto de injeção.
-	 * Em alguns lugares essa opção e bastante utilizada, pois facilita bastante nos testes
-	 */
-//	@Autowired
-//	public AtivacaoClienteService(Notificador notificador) {
-//		this.notificador = notificador;
-//	}
-//	
-//	/*
-//	 * Ao gerar um novo construtor o spring gera um erro, pois ele não sabe qual construtor utilizar,
-//	 * para resolver o problema foi utilizado a anotação @Autowired no construtor acima
-//	 */
-//	public AtivacaoClienteService(String qualquerCoisa) {
-//		
-//	}
-
-//	@Autowired
-//	public void setNotificador(Notificador notificador) {
-//		this.notificador = notificador;
-//	}
-
 	
 	public void ativar(Cliente cliente) {
 		cliente.ativar();
 		
-		this.notificador.notificar(cliente, "Seu cadastro no sistema esta ativo!");
+		if(notificador != null) {
+			this.notificador.notificar(cliente, "Seu cadastro no sistema esta ativo!");
+		} else {
+			System.out.println("Não existe notificador, mas cliente foi ativado");
+		}
 	}
 	
 	
