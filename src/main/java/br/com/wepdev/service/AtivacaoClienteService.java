@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import br.com.wepdev.modelo.Cliente;
 import br.com.wepdev.notificacao.Notificador;
 
-@Component // Definindo a classe como um Bean spring, o spring gerencia, instancia , configura e injeta objetos dessa classe em outros beans
+//@Component // Definindo a classe como um Bean spring, o spring gerencia, instancia , configura e injeta objetos dessa classe em outros beans
 public class AtivacaoClienteService {
 	
 	
