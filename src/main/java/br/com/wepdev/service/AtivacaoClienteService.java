@@ -15,7 +15,7 @@ import br.com.wepdev.notificacao.TipoDoNotificador;
 public class AtivacaoClienteService {
 	
 	//@Qualifier("urgente")
-	@TipoDoNotificador(NivelUrgencia.URGENTE)
+	@TipoDoNotificador(NivelUrgencia.NORMAL)
 	@Autowired//(required = false) // Dessa forma e informado que a dependencia dessa classe não e obrigatoria
 	private Notificador notificador;
 	
