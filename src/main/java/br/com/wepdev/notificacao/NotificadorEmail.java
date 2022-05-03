@@ -1,9 +1,11 @@
 package br.com.wepdev.notificacao;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import br.com.wepdev.modelo.Cliente;
 
+@Primary // Esse se torna o bean principal, com maior prioridade
 @Component
 public class NotificadorEmail implements Notificador {
 	
