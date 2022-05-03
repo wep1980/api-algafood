@@ -5,7 +5,8 @@ import org.springframework.stereotype.Component;
 
 import br.com.wepdev.modelo.Cliente;
 
-@Qualifier("urgente")
+//@Qualifier("urgente")
+@TipoDoNotificador(NivelUrgencia.URGENTE) // Anotação customizada
 @Component
 public class NotificadorSMS implements Notificador {
 	

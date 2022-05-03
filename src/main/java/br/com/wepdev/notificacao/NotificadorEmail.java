@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 
 import br.com.wepdev.modelo.Cliente;
 
-@Qualifier("normal") // Qualificando esse componente
+//@Qualifier("normal") // Qualificando esse componente
+@TipoDoNotificador(NivelUrgencia.NORMAL) // Anotação customizada
 @Component
 public class NotificadorEmail implements Notificador {
 	
