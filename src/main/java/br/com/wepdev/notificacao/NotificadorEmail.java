@@ -9,7 +9,7 @@ import br.com.wepdev.modelo.Cliente;
 
 //@Qualifier("normal") // Qualificando esse componente
 @Profile("prod") // Esse componente vai ser registrado no spring apenas se o projeto estiver rodando no ambiente de produção
-@TipoDoNotificador(NivelUrgencia.NORMAL) // Anotação customizada
+@TipoDoNotificador(NivelUrgencia.SEM_URGENCIA) // Anotação customizada
 @Component
 public class NotificadorEmail implements Notificador {
 	

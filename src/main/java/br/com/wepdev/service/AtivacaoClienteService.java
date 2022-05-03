@@ -1,12 +1,7 @@
 package br.com.wepdev.service;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import br.com.wepdev.modelo.Cliente;
@@ -14,38 +9,32 @@ import br.com.wepdev.notificacao.NivelUrgencia;
 import br.com.wepdev.notificacao.Notificador;
 import br.com.wepdev.notificacao.TipoDoNotificador;
 
-//@Component 
+/*
+ * Essa classe possui uma coesão baixa, pois ela tem 2 responsabilidades, ativar e notificar.
+ * Quanto mais alta for a coesão melhor(menos responsabilidade), com o Design pattern OBSERVER e possivel fazer isso.
+ */
+@Component 
 public class AtivacaoClienteService {
 	
-	@TipoDoNotificador(NivelUrgencia.NORMAL)
+	
+	@TipoDoNotificador(NivelUrgencia.SEM_URGENCIA)
 	@Autowired
 	private Notificador notificador;
+	
+	@Autowired
+	private ApplicationEventPublisher eventPublisher; // Dispara o evento, publica eventos
 
 		
 	public void ativar(Cliente cliente) {
 		cliente.ativar();
 	
-		notificador.notificar(cliente, "Seu cadastro no sistema esta ativo!");
+		/*
+		 * Dispara para todo o sistema que o cliente ja foi ativado, quem tiver interesse pode aproveitar o evento
+		 */
+		eventPublisher.publishEvent(new ClienteAtivadoEvent(cliente));
+		
 	}
 	
-	/**
-	 * @PostConstruct -> Metodo que se inicia apos a fase de inicialização de todas as injeções e construtores 
-	 */
-	//@PostConstruct
-	public void init() {
-		System.out.println("Metodo INIT iniciado " + notificador);
-	}
-	
-	/**
-	 * @PreDestroy -> Metodo que se inicia depois da finalização de todos os beans
-	 */
-	//@PreDestroy
-	public void destroy() {
-		System.out.println("Metodo DESTROY chamado");
-	}
-	
-	
-	
-	
+
 
 }

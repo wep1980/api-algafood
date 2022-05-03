@@ -3,6 +3,6 @@ package br.com.wepdev.notificacao;
 public enum NivelUrgencia {
 	
 	URGENTE,
-	NORMAL
+	SEM_URGENCIA
 
 }
