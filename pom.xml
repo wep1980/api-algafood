@@ -32,6 +32,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
+
+        
+        <!-- dependencia adicionada ao colocar @ConfigurationProperties na classe de configuraçao NotificadorProperties -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 		
 	</dependencies>
 
