@@ -13,5 +13,10 @@ public class Cozinha {
 	private Long id;
 	
 	private String nome;
+	
+	
+	public String getNome() {
+		return nome;
+	}
 
 }
