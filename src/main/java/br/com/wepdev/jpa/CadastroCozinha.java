@@ -28,9 +28,13 @@ public class CadastroCozinha {
 		return query.getResultList();
 	}
 	
-	
+	/**
+	 * Salva e atualiza
+	 * @param cozinha
+	 * @return
+	 */
 	@Transactional
-	public Cozinha adicionar(Cozinha cozinha) {
+	public Cozinha salvar(Cozinha cozinha) {
 		return manager.merge(cozinha);
 	}
 	
