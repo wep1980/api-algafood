@@ -42,6 +42,13 @@ public class CadastroCozinha {
 	public Cozinha buscar(Long id) {
 		return manager.find(Cozinha.class, id);
 	}
+	
+	
+	@Transactional
+	public void remover(Cozinha cozinha) {
+		cozinha = buscar(cozinha.getId()); // Colocando a instancia de cozinha no contexto de persistencia para poder ser removida
+		manager.remove(cozinha);
+	}
 
 }
 
