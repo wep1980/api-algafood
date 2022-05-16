@@ -5,9 +5,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+//@Getter
+//@Setter
+//@EqualsAndHashCode
+@Data // Contem, getter, setter, equals, hashcode, toString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) // Substitui o equals e o hashcode do @Data informando os atributos explicitamente
 @Entity
 public class Cozinha {
 	
+	
+	@EqualsAndHashCode.Include // Equals e hashcode somente com o campo Id 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -15,20 +27,6 @@ public class Cozinha {
 	private String nome;
 	
 	
-	public String getNome() {
-		return nome;
-	}
-	
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 
 }

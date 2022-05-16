@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 
 import br.com.wepdev.ApiAlgafoodApplication;
 import br.com.wepdev.domain.model.Cozinha;
+import br.com.wepdev.domain.repository.CozinhaRepository;
 
 public class ConsultaCozinhaMain {
 
@@ -18,11 +19,11 @@ public static void main(String[] args) {
 				.web(WebApplicationType.NONE) // Não é nenhuma aplicação WEB
 				.run(args);
 
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class); // Pegando um Bean do tipo CadastroCozinha
+		CozinhaRepository cozinhas = applicationContext.getBean(CozinhaRepository.class); // Pegando um Bean do tipo CadastroCozinha
 		
-		List<Cozinha> cozinhas = cadastroCozinha.listar();
+		List<Cozinha> todasCozinhas = cozinhas.todas();
 		
-		for(Cozinha cozinha : cozinhas) {
+		for(Cozinha cozinha : todasCozinhas) {
 			System.out.println(cozinha.getNome());
 			
 		}

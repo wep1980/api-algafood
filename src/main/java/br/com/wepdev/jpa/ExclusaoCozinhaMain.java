@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import br.com.wepdev.ApiAlgafoodApplication;
 import br.com.wepdev.domain.model.Cozinha;
+import br.com.wepdev.domain.repository.CozinhaRepository;
 
 public class ExclusaoCozinhaMain {
 
@@ -16,12 +17,12 @@ public static void main(String[] args) {
 				.web(WebApplicationType.NONE) // Não é nenhuma aplicação WEB
 				.run(args);
 
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class); // Pegando um Bean do tipo CadastroCozinha
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class); // Pegando um Bean do tipo CadastroCozinha
 		
         Cozinha cozinha1 = new Cozinha();
         cozinha1.setId(1L);
         
-        cadastroCozinha.remover(cozinha1);
+        cozinhaRepository.remover(cozinha1);
         
         
 		}

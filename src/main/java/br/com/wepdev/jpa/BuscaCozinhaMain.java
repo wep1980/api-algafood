@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import br.com.wepdev.ApiAlgafoodApplication;
 import br.com.wepdev.domain.model.Cozinha;
+import br.com.wepdev.domain.repository.CozinhaRepository;
 
 public class BuscaCozinhaMain {
 
@@ -16,9 +17,9 @@ public static void main(String[] args) {
 				.web(WebApplicationType.NONE) // Não é nenhuma aplicação WEB
 				.run(args);
 
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class); // Pegando um Bean do tipo CadastroCozinha
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class); // Pegando um Bean do tipo CadastroCozinha
 		
-		Cozinha cozinha = cadastroCozinha.buscar(1L);
+		Cozinha cozinha = cozinhaRepository.porId(1L);
 		
 			System.out.println(cozinha.getNome());
 	}

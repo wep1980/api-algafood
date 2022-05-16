@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import br.com.wepdev.ApiAlgafoodApplication;
 import br.com.wepdev.domain.model.Cozinha;
+import br.com.wepdev.domain.repository.CozinhaRepository;
 
 public class InclusaoCozinhaMain {
 
@@ -16,7 +17,7 @@ public static void main(String[] args) {
 				.web(WebApplicationType.NONE) // Não é nenhuma aplicação WEB
 				.run(args);
 
-		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class); // Pegando um Bean do tipo CadastroCozinha
+		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class); // Pegando um Bean do tipo CadastroCozinha
 		
         Cozinha cozinha1 = new Cozinha();
         cozinha1.setNome("Brasileira");
@@ -24,8 +25,8 @@ public static void main(String[] args) {
         Cozinha cozinha2 = new Cozinha();
         cozinha2.setNome("Japonesa");
         
-        cozinha1 = cadastroCozinha.salvar(cozinha1);
-        cozinha2 = cadastroCozinha.salvar(cozinha2);
+        cozinha1 = cozinhaRepository.adicionar(cozinha1);
+        cozinha2 = cozinhaRepository.adicionar(cozinha2);
         
         System.out.printf("%d - %s\n", cozinha1.getId(), cozinha1.getNome());
         System.out.printf("%d - %s\n", cozinha2.getId(), cozinha2.getNome());
