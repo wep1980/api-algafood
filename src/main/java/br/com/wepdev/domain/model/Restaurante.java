@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Restaurante {
 	
 	
 	@ManyToOne // Muitos restaurantes possue 1 cozinha
+	@JoinColumn(name = "cozinha_id") // Forma de colocar um novo nome no nome da coluna quando possui relacionamento com outra tabela
 	private Cozinha cozinha;
 
 }
