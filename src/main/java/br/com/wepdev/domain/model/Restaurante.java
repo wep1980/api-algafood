@@ -23,14 +23,15 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(nullable = false)
 	private String nome;
 	
-	@Column(name = "taxa_frete")
+	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 	
 	
 	@ManyToOne // Muitos restaurantes possue 1 cozinha
-	@JoinColumn(name = "cozinha_id") // Forma de colocar um novo nome no nome da coluna quando possui relacionamento com outra tabela
+	@JoinColumn(name = "cozinha_id", nullable = false) // Forma de colocar um novo nome no nome da coluna quando possui relacionamento com outra tabela
 	private Cozinha cozinha;
 
 }
