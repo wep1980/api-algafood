@@ -24,7 +24,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 	 * JPQL -> Linguagem de consulta do JPA, para consulta em objetos e não tabelas
 	 */
 	@Override
-	public List<Cozinha> todas(){
+	public List<Cozinha> listar(){
 		
 		TypedQuery<Cozinha> query = manager.createQuery("from Cozinha", Cozinha.class);
 		

@@ -7,7 +7,7 @@ import br.com.wepdev.domain.model.Cozinha;
 public interface CozinhaRepository {
 	
 	
-	List<Cozinha> todas();
+	List<Cozinha> listar();
 	Cozinha porId(Long id);
 	Cozinha adicionar(Cozinha cozinha);
 	void remover(Cozinha cozinha);

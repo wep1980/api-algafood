@@ -21,7 +21,7 @@ public static void main(String[] args) {
 
 		CozinhaRepository cozinhas = applicationContext.getBean(CozinhaRepository.class); // Pegando um Bean do tipo CadastroCozinha
 		
-		List<Cozinha> todasCozinhas = cozinhas.todas();
+		List<Cozinha> todasCozinhas = cozinhas.listar();
 		
 		for(Cozinha cozinha : todasCozinhas) {
 			System.out.println(cozinha.getNome());
