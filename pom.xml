@@ -61,6 +61,13 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
+		
+		<!-- Dependencia que faz a serialização de objetos Java para formato especifico, como XML -->
+		<dependency>
+		   <groupId>com.fasterxml.jackson.dataformat</groupId>
+		   <artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
