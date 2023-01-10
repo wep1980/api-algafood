@@ -27,7 +27,7 @@ public class Cozinha {
 	private Long id;
 	
 	//@JsonIgnore // Ignora essa propriedade, ela nao aparece na representação
-	@JsonProperty("titulo") // Customizando o nome que aparecera na representação
+	//@JsonProperty("titulo") // Customizando o nome que aparecera na representação
 	@Column(nullable = false)
 	private String nome;
 	
