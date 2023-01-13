@@ -43,7 +43,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 	}
 	
 	@Override
-	public Cozinha porId(Long id) {
+	public Cozinha buscar(Long id) {
 		return manager.find(Cozinha.class, id);
 	}
 	
@@ -51,7 +51,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 	@Transactional
 	@Override
 	public void remover(Cozinha cozinha) {
-		cozinha = porId(cozinha.getId()); // Colocando a instancia de cozinha no contexto de persistencia para poder ser removida
+		cozinha = buscar(cozinha.getId()); // Colocando a instancia de cozinha no contexto de persistencia para poder ser removida
 		manager.remove(cozinha);
 	}
 }

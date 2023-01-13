@@ -19,7 +19,7 @@ public static void main(String[] args) {
 
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class); // Pegando um Bean do tipo CadastroCozinha
 		
-		Cozinha cozinha = cozinhaRepository.porId(1L);
+		Cozinha cozinha = cozinhaRepository.buscar(1L);
 		
 			System.out.println(cozinha.getNome());
 	}
