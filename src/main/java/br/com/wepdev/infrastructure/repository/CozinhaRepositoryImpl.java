@@ -1,4 +1,4 @@
-package br.com.wepdev.domain.infrastructure.repository;
+package br.com.wepdev.infrastructure.repository;
 
 import java.util.List;
 
@@ -6,13 +6,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.springframework.stereotype.Component;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.wepdev.domain.model.Cozinha;
 import br.com.wepdev.domain.repository.CozinhaRepository;
 
-@Component
+@Repository
 public class CozinhaRepositoryImpl implements CozinhaRepository {
 
 	
@@ -38,7 +39,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 	 */
 	@Override
 	@Transactional
-	public Cozinha salvar(Cozinha cozinha) {
+	public Cozinha salvarOuAtualizar(Cozinha cozinha) {
 		return manager.merge(cozinha);
 	}
 	
@@ -50,8 +51,22 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 	
 	@Transactional
 	@Override
-	public void remover(Cozinha cozinha) {
-		cozinha = buscar(cozinha.getId()); // Colocando a instancia de cozinha no contexto de persistencia para poder ser removida
+	public void remover(Long cozinhaId) {
+		Cozinha cozinha = buscar(cozinhaId); // Colocando a instancia de cozinha no contexto de persistencia para poder ser removida
+		if(cozinha == null) {
+			throw new EmptyResultDataAccessException(1); // O esperado no resultado era de 1 cozinha
+		}
 		manager.remove(cozinha);
+	}
+
+	/*
+	 * JPQL
+	 */
+	@Override
+	public List<Cozinha> consultaPorNome(String nome) {
+		
+		return manager.createQuery("from Cozinha where nome like :nome", Cozinha.class)
+				.setParameter("nome", "%" + nome + "%")
+				.getResultList();
 	}
 }

@@ -1,17 +1,17 @@
-package br.com.wepdev.domain.infrastructure.repository;
+package br.com.wepdev.infrastructure.repository;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.wepdev.domain.model.Permissao;
 import br.com.wepdev.domain.repository.PermissaoRepository;
 
-@Component
+@Repository
 public class PermissaoRepositoryImpl implements PermissaoRepository{
 
 	

@@ -24,7 +24,7 @@ public static void main(String[] args) {
         cozinha1.setNome("Brasileira");
         
         
-        cozinha1 = cozinhas.salvar(cozinha1);
+        cozinha1 = cozinhas.salvarOuAtualizar(cozinha1);
         
         System.out.println(cozinha1.getNome());
         
