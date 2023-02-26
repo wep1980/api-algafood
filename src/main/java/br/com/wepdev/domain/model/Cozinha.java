@@ -1,10 +1,14 @@
 package br.com.wepdev.domain.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,6 +34,11 @@ public class Cozinha {
 	//@JsonProperty("titulo") // Customizando o nome que aparecera na representação
 	@Column(nullable = false)
 	private String nome;
+	
+	// Uma cozinha pode ter muitos restaurantes
+	@OneToMany(mappedBy = "cozinha")
+	@JsonIgnore // Ignora essa propriedade na serialização, nesse tipo de relacionamento existe um movimento circular entre cozinha e restaurante(loop infinito)
+	private List<Restaurante> restaurantes = new ArrayList<>(); // Ao instanciar uma cozinha, se evita o NullpointerExcepetion
 	
 	
 

@@ -18,12 +18,12 @@ public class CozinhaService {
 	
 	
 	public Cozinha salvarOuAtualizar(Cozinha cozinha) {
-		return cozinhaRepository.salvarOuAtualizar(cozinha);
+		return cozinhaRepository.save(cozinha);
 	}
 	
 	public void excluir (Long cozinhaId) {
 		try {
-			cozinhaRepository.remover(cozinhaId);
+			cozinhaRepository.deleteById(cozinhaId);
 			     /*
 			      * DataIntegrityViolationException - essa exception ocorre ao tentar deletar uma cozinha que esteja associada a um restaurante,
 			      * como e uma exception de infra estrutura ela sera tratada e traduzida aqui, por uma exception customizada

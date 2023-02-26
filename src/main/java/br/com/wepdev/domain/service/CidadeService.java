@@ -1,6 +1,7 @@
 package br.com.wepdev.domain.service;
 
-import org.springframework.beans.BeanUtils;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -8,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.wepdev.domain.exception.EntidadeEmUsoException;
 import br.com.wepdev.domain.exception.EntidadeNaoEncontradaException;
@@ -30,60 +29,43 @@ public class CidadeService {
     
 	
 	
-	public Cidade adicionar(Cidade cidade) {
+	public Cidade salvar(Cidade cidade) {
+		
         Long estadoId = cidade.getEstado().getId();
-        Estado estado = estadoRepository.buscar(estadoId);
         
-        if (estado == null) {
-            throw new EntidadeNaoEncontradaException(
-                String.format("Não existe cadastro de estado com código %d", estadoId));
-        }
+        Estado estado = estadoRepository.findById(estadoId)
+        		.orElseThrow(() -> new EntidadeNaoEncontradaException(
+        		    String.format("Não existe cadastro de estado com código %d", estadoId)));
         
         cidade.setEstado(estado);
         
-        return cidadeRepository.salvar(cidade);
+        return cidadeRepository.save(cidade);
     }
     
     
     @GetMapping("/{cidadeId}")
 	public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId) {
-		Cidade cidade = cidadeRepository.buscar(cidadeId);
+		Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
 		
-		if (cidade != null) {
-			return ResponseEntity.ok(cidade);
+		if (cidade.isPresent()) {
+			return ResponseEntity.ok(cidade.get());
 		}
-		
 		return ResponseEntity.notFound().build();
 	}
     
     
-    @PutMapping("/{cidadeAId}")
-	public ResponseEntity<Cidade> atualizar(@PathVariable Long cidadeId,
-			@RequestBody Cidade cidade) {
-		Cidade cidadeAtual = cidadeRepository.buscar(cidadeId);
-		
-		if (cidadeAtual != null) {
-			BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+	public void excluir(Long cidadeId) {
+		try {
+			cidadeRepository.deleteById(cidadeId);
 			
-			cidadeAtual = cidadeRepository.salvar(cidadeAtual);
-			return ResponseEntity.ok(cidadeAtual);
-		}
+		} catch (EmptyResultDataAccessException e) {
+			throw new EntidadeNaoEncontradaException(
+				String.format("Não existe um cadastro de cidade com código %d", cidadeId));
 		
-		return ResponseEntity.notFound().build();
+		} catch (DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException(
+				String.format("Cidade de código %d não pode ser removida, pois está em uso", cidadeId));
+		}
 	}
     
-    
-    public void excluir(Long cidadeId) {
-        try {
-            cidadeRepository.remover(cidadeId);
-            
-        } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                String.format("Não existe um cadastro de cidade com código %d", cidadeId));
-        
-        } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(
-                String.format("Cidade de código %d não pode ser removida, pois está em uso", cidadeId));
-        }
-    }
 }

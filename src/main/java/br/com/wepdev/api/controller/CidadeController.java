@@ -1,5 +1,8 @@
 package br.com.wepdev.api.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,22 +34,26 @@ public class CidadeController {
 	private CidadeRepository cidadeRepository;
 	
 	
-    @GetMapping("/{cidadeId}")
+	@GetMapping
+	public List<Cidade> listar() {
+		return cidadeRepository.findAll();
+	}
+	
+	@GetMapping("/{cidadeId}")
 	public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId) {
-		Cidade cidade = cidadeRepository.buscar(cidadeId);
+		Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
 		
-		if (cidade != null) {
-			return ResponseEntity.ok(cidade);
+		if (cidade.isPresent()) {
+			return ResponseEntity.ok(cidade.get());
 		}
 		
 		return ResponseEntity.notFound().build();
 	}
-    
-    
-    @PostMapping
+	
+	@PostMapping
 	public ResponseEntity<?> adicionar(@RequestBody Cidade cidade) {
 		try {
-			cidade = cidadeService.adicionar(cidade);
+			cidade = cidadeService.salvar(cidade);
 			
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(cidade);
@@ -55,36 +62,42 @@ public class CidadeController {
 					.body(e.getMessage());
 		}
 	}
-    
-    
-    @PutMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
-    	
-		Cidade cidadeAtual = cidadeRepository.buscar(cidadeId);
-		
-		if (cidadeAtual != null) {
-			BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-			
-			cidadeAtual = cidadeService.adicionar(cidadeAtual);
-			return ResponseEntity.ok(cidadeAtual);
-		}
-		
-		return ResponseEntity.notFound().build();
-	}
-    
-    
-    @DeleteMapping("/{cidadeAId}")
-	public ResponseEntity<?> remover(@PathVariable Long cidadeAId) {
+	
+	@PutMapping("/{cidadeId}")
+	public ResponseEntity<?> atualizar(@PathVariable Long cidadeId,
+			@RequestBody Cidade cidade) {
 		try {
-			cidadeService.excluir(cidadeAId);	
+			// Podemos usar o orElse(null) também, que retorna a instância de cidade
+			// dentro do Optional, ou null, caso ele esteja vazio,
+			// mas nesse caso, temos a responsabilidade de tomar cuidado com NullPointerException
+			Cidade cidadeAtual = cidadeRepository.findById(cidadeId).orElse(null);
+			
+			if (cidadeAtual != null) {
+				BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+				
+				cidadeAtual = cidadeService.salvar(cidadeAtual);
+				return ResponseEntity.ok(cidadeAtual);
+			}
+			
+			return ResponseEntity.notFound().build();
+		
+		} catch (EntidadeNaoEncontradaException e) {
+			return ResponseEntity.badRequest()
+					.body(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/{cidadeId}")
+	public ResponseEntity<Cidade> remover(@PathVariable Long cidadeId) {
+		try {
+			cidadeService.excluir(cidadeId);	
 			return ResponseEntity.noContent().build();
 			
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build();
 			
 		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT)
-					.body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
 }

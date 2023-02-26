@@ -1,6 +1,7 @@
 package br.com.wepdev.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,22 +39,22 @@ public class CozinhaController {
 
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE }) // , MediaType.APPLICATION_XML_VALUE})
 	public List<Cozinha> listar() {
-		return cozinhaRepository.listar();
+		return cozinhaRepository.findAll();
 	}
 
 	@GetMapping(produces = { MediaType.APPLICATION_XML_VALUE })
 	public CozinhasXmlWrapper listarXml() {
-		return new CozinhasXmlWrapper(cozinhaRepository.listar());
+		return new CozinhasXmlWrapper(cozinhaRepository.findAll());
 	}
 
 	@ResponseStatus(HttpStatus.OK) // forma mais generica de enviar um status
 	@GetMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> buscar(@PathVariable("cozinhaId") Long id) {
 
-		Cozinha cozinha = cozinhaRepository.buscar(id);
+		Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
 
-		if (cozinha != null) {
-			return ResponseEntity.ok(cozinha);
+		if (cozinha.isPresent()) {
+			return ResponseEntity.ok(cozinha.get());
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -69,15 +70,14 @@ public class CozinhaController {
 	@PutMapping("/{cozinhaId}")
 	public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
 
-		Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
+		Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
 
-		if (cozinhaAtual != null) {
-			// cozinhaAtual.setNome(cozinha.getNome());
-			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id"); // O ID de cozinha que é nulo, não sera copiado para
-																	// a cozinha atual
-			cozinhaRepository.salvarOuAtualizar(cozinhaAtual);
+		if (cozinhaAtual.isPresent()) {
+			BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id"); // O ID de cozinha que é nulo, não sera copiado para
+			
+			Cozinha cozinhaSalva = cozinhaService.salvarOuAtualizar(cozinhaAtual.get());
 
-			return ResponseEntity.ok(cozinhaAtual);
+			return ResponseEntity.ok(cozinhaSalva);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
